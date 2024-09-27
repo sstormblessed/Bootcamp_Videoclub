@@ -171,8 +171,18 @@ ORDER BY CUENTA DESC
 LIMIT 1;
 
 -- 29. Indica cuantos premios han ganado cada uno de los estudios con las películas que han creado
+SELECT STUDIO_NAME, SUM(AWARD_WIN) AS T_AWARDS
+FROM PUBLIC.MOVIES MOVIE
+JOIN PUBLIC.STUDIOS STUDIO ON MOVIE.STUDIO_ID = STUDIO.STUDIO_ID
+JOIN PUBLIC.AWARDS AWARD ON MOVIE.MOVIE_ID = AWARD.MOVIE_ID
+GROUP BY STUDIO_NAME;
 
 -- 30. Indica el número de premios a los que estuvo nominado un actor, pero que no ha conseguido (Si una película está nominada a un premio, su actor también lo está)
+SELECT ACTOR_NAME, SUM(AWARD_NOMINATION - AWARD_WIN) AS AWS
+FROM PUBLIC.ACTORS ACTOR
+JOIN PUBLIC.MOVIES_ACTORS MA ON ACTOR.ACTOR_ID = MA.ACTOR_ID
+JOIN PUBLIC.AWARDS AWARD ON MA.MOVIE_ID = AWARD.MOVIE_ID
+GROUP BY ACTOR_NAME;
 
 -- 31. Indica cuantos actores y directores hicieron películas para los estudios no activos
 SELECT COUNT(ACTOR.ACTOR_ID) AS N_ACTOR
